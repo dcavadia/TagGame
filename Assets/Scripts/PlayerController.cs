@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Simple character controller for movement
 /// </summary>
-public class PlayerController : NetworkBehaviour
+public class PlayerController : MonoBehaviour
 {
     private void Awake()
     {
@@ -15,14 +15,6 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         playerInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner)
-        {
-            Destroy(this);
-        }
     }
 
     private void FixedUpdate()
