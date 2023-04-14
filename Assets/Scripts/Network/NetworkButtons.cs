@@ -18,4 +18,12 @@ public class NetworkButtons : MonoBehaviour
 
         GUILayout.EndArea();
     }
+
+    //Artificial lag:
+    // private void Awake() {
+    //     GetComponent<UnityTransport>().SetDebugSimulatorParameters(
+    //         packetDelay: 120,
+    //         packetJitter: 5,
+    //         dropRate: 3);
+    // }
 }
