@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TagGameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/1 - PlayGround Human (1 - Holsters) 1.unity
+    guid: 2150fc143292f2e439a5f71605bcec81
   m_configObjects: {}

@@ -9,7 +9,11 @@ using UnityEngine;
 /// </summary>
 public class NetworkButtons : MonoBehaviour
 {
-    private void OnGUI()
+    public GameObject steveNpc;
+    public GameObject mathcmakingPanel;
+    bool matchStarted = false;
+
+    /*private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 300, 300));
         if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
@@ -20,6 +24,35 @@ public class NetworkButtons : MonoBehaviour
         }
 
         GUILayout.EndArea();
+    }*/
+
+    private void Update()
+    {
+        if(!matchStarted)
+        {
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                NetworkManager.Singleton.StartHost();
+                matchStarted= true;
+                mathcmakingPanel.SetActive(false);
+                steveNpc.SetActive(false);
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                NetworkManager.Singleton.StartServer();
+                matchStarted = true;
+                mathcmakingPanel.SetActive(false);
+                steveNpc.SetActive(false);
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                NetworkManager.Singleton.StartClient();
+                matchStarted = true;
+                mathcmakingPanel.SetActive(false);
+                steveNpc.SetActive(false);
+            }
+        }
+        
     }
 
     //Artificial lag:

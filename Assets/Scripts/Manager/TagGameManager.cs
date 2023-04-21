@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class TagGameManager : SingletonComponent<TagGameManager>
 {
+    public CinemachineFreeLook introCamera;
+    public CinemachineFreeLook gameplayCamera;
     public TagMatchNetwork TagMatchNetwork;
 
     private void Start()

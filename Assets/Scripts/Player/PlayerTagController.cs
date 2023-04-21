@@ -10,7 +10,6 @@ using UnityEngine;
 public class PlayerTagController : NetworkBehaviour
 {
     [SerializeField] private GameObject crown;
-
     private void Awake()
     {
         TagGameManager.Instance.TagMatchNetwork.whoHasCrown.OnValueChanged += OnValueChanged;
