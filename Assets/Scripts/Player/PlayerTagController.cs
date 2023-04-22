@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using MalbersAnimations;
 
 /// <summary>
 /// Controller of the tag game mechanics in player
@@ -10,6 +11,7 @@ using UnityEngine;
 public class PlayerTagController : NetworkBehaviour
 {
     [SerializeField] private GameObject crown;
+
     private void Awake()
     {
         TagGameManager.Instance.TagMatchNetwork.whoHasCrown.OnValueChanged += OnValueChanged;
@@ -24,30 +26,21 @@ public class PlayerTagController : NetworkBehaviour
     {
         if (nextCrownValue == OwnerClientId)
         {
-            crown.SetActive(true);
+            EnableCrown();
         }
         else
         {
-            crown.SetActive(false);
+            DisableCrown();
         }
     }
 
     public override void OnNetworkSpawn()
     {
-        //Debug.Log("SPAWN: " + OwnerClientId);
-        if (NetworkObjectId == 1)
-        {//Temporal way to get the first player to enter the match
-            //Host mode
-            crown.SetActive(true);
-        }
-        else if(NetworkObjectId == 2)
-        {
-            //Server mode
-            //crown.SetActive(true);
-        }
-        else
-        {
+        TagGameManager.Instance.players.Add(NetworkObjectId, this);
 
+        if(TagGameManager.Instance.players.Count == 1)
+        {
+            EnableCrown();
         }
     }
 
@@ -89,5 +82,20 @@ public class PlayerTagController : NetworkBehaviour
             }
 
         }
+    }
+
+    bool HasCrown()
+    {
+        return NetworkObjectId == TagGameManager.Instance.TagMatchNetwork.whoHasCrown.Value;
+    }
+
+    void DisableCrown()
+    {
+        crown.SetActive(false);
+    }
+
+    void EnableCrown()
+    {
+        crown.SetActive(true);
     }
 }

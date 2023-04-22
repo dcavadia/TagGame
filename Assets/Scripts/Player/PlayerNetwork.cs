@@ -17,7 +17,6 @@ public class PlayerNetwork : NetworkBehaviour
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
-
         var permission = usingServerAuthority ? NetworkVariableWritePermission.Server : NetworkVariableWritePermission.Owner;
         playerState = new NetworkVariable<PlayerNetworkState>(writePerm: permission);
     }
@@ -40,6 +39,15 @@ public class PlayerNetwork : NetworkBehaviour
         {
             Destroy(transform.GetComponent<PlayerController>());
         }
+        else
+        {
+            transform.GetComponent<PlayerController>().SetGameplayCamera();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     private void TransmitState()

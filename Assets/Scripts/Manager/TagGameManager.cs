@@ -9,8 +9,11 @@ using UnityEngine;
 public class TagGameManager : SingletonComponent<TagGameManager>
 {
     public CinemachineFreeLook introCamera;
-    public CinemachineFreeLook gameplayCamera;
+    public List<CinemachineFreeLook> gameplayCamera = new List<CinemachineFreeLook>();
+    public CinemachineVirtualCamera onTargetCamera;
     public TagMatchNetwork TagMatchNetwork;
+
+    public Dictionary<ulong, PlayerTagController> players = new Dictionary<ulong, PlayerTagController>();
 
     private void Start()
     {
