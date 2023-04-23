@@ -3948,10 +3948,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCM: {fileID: 4416391560150000191}
-  speed: 7
+  speed: 12
   airVelocity: 7
   gravity: 40
-  maxVelocityChange: 10
+  maxVelocityChange: 15
   jumpHeight: 2
   maxFallSpeed: 20
   rotateSpeed: 25
