@@ -74,18 +74,6 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
-            cam = TagGameManager.Instance.gameplayCamera[0].gameObject;
-            if (moveDir.x != 0 || moveDir.z != 0)
-            {
-                Vector3 targetDir = moveDir; //Direction of the character
-
-                targetDir.y = 0;
-                if (targetDir == Vector3.zero)
-                    targetDir = transform.forward;
-                Quaternion tr = Quaternion.LookRotation(targetDir); //Rotation of the character to where it moves
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, Time.deltaTime * rotateSpeed); //Rotate the character little by little
-                transform.rotation = targetRotation;
-            }
 
             if (IsGrounded())
             {
@@ -95,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
                 // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.velocity;
-                if (targetVelocity.magnitude < velocity.magnitude) //If I'm slowing down the character
+                if (targetVelocity.magnitude < velocity.magnitude)
                 {
                     targetVelocity = velocity;
                     rb.velocity /= 1.1f;
@@ -112,7 +100,6 @@ public class PlayerController : MonoBehaviour
                 else if (Mathf.Abs(rb.velocity.magnitude) < speed * 1.0f)
                 {
                     rb.AddForce(moveDir * 0.15f, ForceMode.VelocityChange);
-                    //Debug.Log(rb.velocity.magnitude);
                 }
 
                 // Jump
@@ -144,18 +131,34 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = pushDir * pushForce;
         }
-        // We apply gravity manually for more tuning control
         rb.AddForce(new Vector3(0, -gravity * GetComponent<Rigidbody>().mass, 0));
     }
 
     private void Update()
     {
+        cam = TagGameManager.Instance.gameplayCamera[0].gameObject;
+
+        // Get direction from camera to player
+        Vector3 targetDir = transform.position - cam.transform.position;
+        targetDir.y = 0;
+        targetDir.Normalize();
+
+        Quaternion tr = Quaternion.LookRotation(targetDir);
+        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, Time.deltaTime * rotateSpeed);
+        transform.rotation = targetRotation;
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        Vector3 v2 = v * cam.transform.forward; //Vertical axis to which I want to move with respect to the camera
-        Vector3 h2 = h * cam.transform.right; //Horizontal axis to which I want to move with respect to the camera
-        moveDir = (v2 + h2).normalized; //Global position to which I want to move in magnitude 1
+        Vector3 forward = transform.forward;
+        forward.y = 0;
+        Vector3 right = transform.right;
+        right.y = 0;
+
+        Vector3 v2 = v * forward.normalized;
+        Vector3 h2 = h * right.normalized;
+
+        moveDir = (v2 + h2).normalized;
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, distToGround + 0.1f))
